@@ -1,0 +1,22 @@
+version: '3.8'
+services:
+  arachni:
+    # image: 'csalab/arachni:latest'
+    image: 'ubuntu:22.04'
+    hostname: arachni.csaf.lab
+    # build: .
+    volumes:
+      - ./arachni:/opt/arachni
+      - ./chromedriver:/usr/bin/chromedriver
+    entrypoint: ['sleep', '9999999999999999999999']
+    networks:
+      dast:
+        ipv4_address: 10.0.10.10
+
+networks:
+  dast:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.0.10.0/24
+          gateway: 10.0.10.1
