@@ -2,21 +2,28 @@ version: '3.8'
 services:
   arachni:
     image: 'csalab/arachni:latest'
-    hostname: arachni.csaf.lab
+    hostname: arachni.lab
     restart: always
     build:
       context: ./build/
       dockerfile: arachni.Dockerfile
-    ports:
-      - 0.0.0.0:9292:9292
+    volumes:
+      - arachni:/opt/arachni
     networks:
       dast:
-        ipv4_address: 10.0.10.10
+
+  dast-ci:
+    image: 'csalab/dast-ci:latest'
+    hostname: dast-ci.lab
+    build:
+      context: ./build/
+      dockerfile: dast-ci.Dockerfile
+    networks:
+      dast:
 
 networks:
   dast:
     driver: bridge
-    ipam:
-      config:
-        - subnet: 10.0.10.0/24
-          gateway: 10.0.10.1
+
+volumes:
+  arachni: {}
